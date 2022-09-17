@@ -63,5 +63,13 @@ def cruce(cromosoma1,cromosoma2):
             hijo2 += b
     return hijo1 + "\n" + hijo2
 
-
-
+def mutacion (hijos):
+    for i in range(len(hijos)):
+        for j in range(len(hijos[i])):
+            aleatorio = random.randint(0, 100)
+            if aleatorio <= 5:
+                if hijos[i][j] == 0:
+                    hijos[i][j] = 1
+                else:
+                    hijos[i][j] = 0
+    return hijos
