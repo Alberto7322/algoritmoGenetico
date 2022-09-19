@@ -17,13 +17,15 @@ def iniciar(m, n):
 
 def evaluar(poblacion):
     resultados = []
-    pos_elegido = []
     for i in poblacion:
             cromosoma = i
             web = "http://memento.evannai.inf.uc3m.es/age/test?c="
             r = requests.get(web + cromosoma)
             resultados.append(r.text)
+    return resultados
 
+def seleccionar(resultados):
+    pos_elegido = []
     for k in range(6):
         mejor = 10000000000
         for i in range(10):
@@ -31,33 +33,43 @@ def evaluar(poblacion):
             elegido = float(resultados[x])
             if elegido < mejor:
                 mejor = elegido
-                pos_elegido.append(x)
         print(mejor)
+        pos_elegido.append(x)
+
     return pos_elegido
 
 poblacion = iniciar(m, n)
-print(poblacion)
-mejor = evaluar(poblacion)
-for i in range(6):
+resultados = evaluar(poblacion)
+mejor = seleccionar(resultados)
+print(mejor)
+"""for i in range(6):
     print(poblacion[mejor[i]])
-
+"""
 def cruce(cromosoma1,cromosoma2):
-    hijo1=""
-    hijo2=""
+    hijo1 = ""
+    hijo2 = ""
     for i in range(len(cromosoma1)):
-        a=cromosoma1[i]
-        b=cromosoma2[i]
-        r=random.randint(0,1)
-        if r==0:
-            hijo1+=a
+        a = cromosoma1[i]
+        b = cromosoma2[i]
+        r = random.randint(0, 1)
+        if r == 0:
+            hijo1 += a
         else:
-            hijo1+=b
-        s=random.randint(0,1)
-        if s==0:
-            hijo2+=a
+            hijo1 += b
+        s = random.randint(0, 1)
+        if s == 0:
+            hijo2 += a
         else:
-            hijo2+=b
-    return hijo1 +"\n"+hijo2
+            hijo2 += b
+    return hijo1 + "\n" + hijo2
 
-
-
+def mutacion (hijos):
+    for i in range(len(hijos)):
+        for j in range(len(hijos[i])):
+            aleatorio = random.randint(0, 100)
+            if aleatorio <= 5:
+                if hijos[i][j] == 0:
+                    hijos[i][j] = 1
+                else:
+                    hijos[i][j] = 0
+    return hijos
