@@ -6,6 +6,7 @@ n = 32
 
 
 def iniciar(m, n):
+
     palabra = ""
     poblacion = []
     for i in range(m):
@@ -28,13 +29,14 @@ def seleccionar(resultados, m, poblacion):
     pos_elegido = []
     for k in range(m):
         mejor = 10000000000
+        pos = None
         for i in range(4):
             x = random.randint(0, len(resultados)-1)
             elegido = float(resultados[x])
             if elegido < mejor:
                 mejor = elegido
-        #print(mejor)
-        pos_elegido.append(poblacion[x])
+                pos = x
+        pos_elegido.append(poblacion[pos])
 
     return pos_elegido
 
