@@ -20,7 +20,7 @@ def evaluar(poblacion):
     resultados = []
     for i in poblacion:
             cromosoma = i
-            web = "http://memento.evannai.inf.uc3m.es/age/test?c="
+            web = "http://163.117.164.219/age/test?c="
             r = requests.get(web + cromosoma)
             resultados.append(r.text)
     return resultados
