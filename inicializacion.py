@@ -83,8 +83,10 @@ def mutacion (poblacion):
         poblacion2.append(aux)
     return poblacion2
 
+mejor_absoluto = 100000000000000000
 poblacion = iniciar(m, n)
-for k in range(150):
+
+for k in range(250):
     resultados = evaluar(poblacion)
     mejores = seleccionar(resultados, m, poblacion)
     cruzados = cruce(mejores)
@@ -97,4 +99,10 @@ for k in range(150):
             mejor = comparado
             pos = i
 
-    print("El mejor resultado es:", mejor, "del cromosoma", poblacion[pos], "en la iteracion", k)
+    if mejor < mejor_absoluto:
+        mejor_absoluto = mejor
+        cromosoma_absolto = poblacion[pos]
+        iteracion= k
+    print(k)
+   # print("El mejor resultado es:", mejor, "del cromosoma", poblacion[pos], "en la iteracion", k)
+print("El mejor resultado es:", mejor_absoluto, "del cromosoma", cromosoma_absolto, "en la iteracion", iteracion)
