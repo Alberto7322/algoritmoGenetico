@@ -1,5 +1,6 @@
 import random
 import requests
+import time
 
 m = 100
 n = 32
@@ -26,7 +27,7 @@ def evaluar(poblacion):
     return resultados
 
 def seleccionar(resultados, m, poblacion):
-    pos_elegido = []
+    mejores = []
     for k in range(m):
         mejor = 10000000000
         pos = None
@@ -36,9 +37,9 @@ def seleccionar(resultados, m, poblacion):
             if elegido < mejor:
                 mejor = elegido
                 pos = x
-        pos_elegido.append(poblacion[pos])
+        mejores.append(poblacion[pos])
 
-    return pos_elegido
+    return mejores
 
 def cruce(mejores):
 
@@ -86,7 +87,11 @@ def mutacion (poblacion):
 mejor_absoluto = 100000000000000000
 poblacion = iniciar(m, n)
 
-for k in range(250):
+#for k in range(100):
+cont = 0
+k = 0
+inicio = time.time()
+while cont == 0 and k < 150:
     resultados = evaluar(poblacion)
     mejores = seleccionar(resultados, m, poblacion)
     cruzados = cruce(mejores)
@@ -102,7 +107,17 @@ for k in range(250):
     if mejor < mejor_absoluto:
         mejor_absoluto = mejor
         cromosoma_absolto = poblacion[pos]
-        iteracion= k
-    print(k)
+        iteracion = k
+        no_mej = 0
+    else:
+        no_mej += 1
+
+    if no_mej == 50:
+        cont = 500
+    #print(k)
+    k += 1
+
    # print("El mejor resultado es:", mejor, "del cromosoma", poblacion[pos], "en la iteracion", k)
+fin = time.time()
 print("El mejor resultado es:", mejor_absoluto, "del cromosoma", cromosoma_absolto, "en la iteracion", iteracion)
+print("Tiempo ejecucion:", (fin - inicio))
