@@ -7,15 +7,7 @@ n = 80
 
 
 def iniciar(m, n):
-
-    palabra = ""
-    poblacion = []
-    for i in range(m):
-        for j in range(n):
-            palabra += (str(random.randint(0,1)))
-        poblacion.append(palabra)
-        palabra = ""
-    return poblacion
+    return [''.join([str(random.randint(0,1)) for j in range(n)]) for i in range(m)]
 
 def evaluar(poblacion):
     resultados = []
