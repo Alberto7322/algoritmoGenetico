@@ -3,7 +3,7 @@ import requests
 import time
 
 m = 100
-n = 32
+n = 80
 
 
 def iniciar(m, n):
@@ -21,7 +21,7 @@ def evaluar(poblacion):
     resultados = []
     for i in poblacion:
             cromosoma = i
-            web = "http://163.117.164.219/age/test?c="
+            web = "http://163.117.164.219/age/alfa?c="
             r = requests.get(web + cromosoma)
             resultados.append(r.text)
     return resultados
@@ -91,7 +91,7 @@ poblacion = iniciar(m, n)
 cont = 0
 k = 0
 inicio = time.time()
-while cont == 0 and k < 150:
+while cont == 0 and k < 100:
     resultados = evaluar(poblacion)
     mejores = seleccionar(resultados, m, poblacion)
     cruzados = cruce(mejores)
@@ -114,7 +114,7 @@ while cont == 0 and k < 150:
 
     if no_mej == 50:
         cont = 500
-    #print(k)
+    print(k)
     k += 1
 
    # print("El mejor resultado es:", mejor, "del cromosoma", poblacion[pos], "en la iteracion", k)
