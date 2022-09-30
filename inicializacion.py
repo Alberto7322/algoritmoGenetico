@@ -2,7 +2,7 @@ import random
 import requests
 import time
 
-m = 100
+m = 50
 n = 80
 
 
@@ -70,11 +70,12 @@ def cruce(mejores):
 
 def mutacion (poblacion):
     poblacion2 = []
+    factor = random.randint(1, 5)
     for i in range(len(poblacion)):
         aux = ""
         for j in range(len(poblacion[i])):
             aleatorio = random.randint(0, 100)
-            if aleatorio <= 5:
+            if aleatorio <= factor:
                 if poblacion[i][j] == "0":
                     aux += "1"
                 else:
@@ -91,7 +92,7 @@ poblacion = iniciar(m, n)
 cont = 0
 k = 0
 inicio = time.time()
-while cont == 0 and k < 100:
+while cont == 0 and k < 150:
     resultados = evaluar(poblacion)
     mejores = seleccionar(resultados, m, poblacion)
     cruzados = cruce(mejores)
