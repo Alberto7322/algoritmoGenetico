@@ -60,13 +60,12 @@ def cruce(mejores):
         poblacion.append(hijo2)
     return poblacion
 
-def mutacion (poblacion):
+def mutacion (poblacion, factor):
     poblacion2 = []
-    factor = 1
     for i in range(len(poblacion)):
         aux = ""
         for j in range(len(poblacion[i])):
-            aleatorio = random.randint(0, 100)
+            aleatorio = random.uniform(0, 100)
             if aleatorio <= factor:
                 if poblacion[i][j] == "0":
                     aux += "1"
@@ -84,11 +83,14 @@ poblacion = iniciar(m, n)
 cont = 0
 k = 0
 inicio = time.time()
+factor = 2
 while cont == 0 and k < 100:
+    if k > 50:
+        factor = 1
     resultados = evaluar(poblacion)
     mejores = seleccionar(resultados, m, poblacion)
     cruzados = cruce(mejores)
-    poblacion = mutacion(cruzados)
+    poblacion = mutacion(cruzados, factor)
     resultados_f = evaluar(poblacion)
     mejor = 1000000000000
     for i in range(len(resultados_f)):
@@ -102,12 +104,13 @@ while cont == 0 and k < 100:
         cromosoma_absolto = poblacion[pos]
         iteracion = k
         no_mej = 0
+        print(mejor)
     else:
         no_mej += 1
 
     if no_mej == 50:
         cont = 500
-    print(k)
+    print(k, no_mej)
     k += 1
 
    # print("El mejor resultado es:", mejor, "del cromosoma", poblacion[pos], "en la iteracion", k)
