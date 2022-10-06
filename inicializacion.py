@@ -2,7 +2,7 @@ import random
 import requests
 import time
 
-m = 100
+m = 50
 n = 80
 
 
@@ -78,25 +78,25 @@ def mutacion (poblacion, factor):
 
 mejor_absoluto = 100000000000000000
 poblacion = iniciar(m, n)
+resultados = evaluar(poblacion)
 
 #for k in range(100):
 cont = 0
 k = 0
 inicio = time.time()
 factor = 2
-torneo = 10
+torneo = 8
 
-while cont == 0 and k < 100:
+while cont == 0 and k < 150:
     if k > 50:
         factor = 1
-    resultados = evaluar(poblacion)
     mejores = seleccionar(resultados, m, poblacion, torneo)
     cruzados = cruce(mejores)
     poblacion = mutacion(cruzados, factor)
-    resultados_f = evaluar(poblacion)
+    resultados = evaluar(poblacion)
     mejor = 1000000000000
-    for i in range(len(resultados_f)):
-        comparado = float(resultados_f[i])
+    for i in range(len(resultados)):
+        comparado = float(resultados[i])
         if comparado < mejor:
             mejor = comparado
             pos = i
