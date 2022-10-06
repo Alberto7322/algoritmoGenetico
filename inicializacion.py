@@ -18,12 +18,12 @@ def evaluar(poblacion):
             resultados.append(r.text)
     return resultados
 
-def seleccionar(resultados, m, poblacion):
+def seleccionar(resultados, m, poblacion, torneo):
     mejores = []
     for k in range(m):
         mejor = 10000000000
         pos = None
-        for i in range(10):
+        for i in range(torneo):
             x = random.randint(0, len(resultados)-1)
             elegido = float(resultados[x])
             if elegido < mejor:
@@ -84,11 +84,13 @@ cont = 0
 k = 0
 inicio = time.time()
 factor = 2
+torneo = 10
+
 while cont == 0 and k < 100:
     if k > 50:
         factor = 1
     resultados = evaluar(poblacion)
-    mejores = seleccionar(resultados, m, poblacion)
+    mejores = seleccionar(resultados, m, poblacion, torneo)
     cruzados = cruce(mejores)
     poblacion = mutacion(cruzados, factor)
     resultados_f = evaluar(poblacion)
