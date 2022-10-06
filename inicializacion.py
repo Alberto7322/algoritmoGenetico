@@ -77,13 +77,14 @@ def mutacion (poblacion, factor):
     return poblacion2
 
 mejor_absoluto = 100000000000000000
+
+inicio = time.time()
 poblacion = iniciar(m, n)
 resultados = evaluar(poblacion)
 
 #for k in range(100):
 cont = 0
 k = 0
-inicio = time.time()
 factor = 2
 torneo = 8
 
