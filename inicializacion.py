@@ -2,7 +2,7 @@ import random
 import requests
 import time
 
-m = 50
+m = 100
 n = 80
 
 
@@ -43,19 +43,21 @@ def cruce(mejores):
         padre = mejores[i-1]
         madre = mejores[i]
 
-        for j in range(len(padre)):
-            a = padre[j]
-            b = madre[j]
+        for j in range(0,len(padre),8):
+            a = padre[j:j+8]
+            b = madre[j:j+8]
             r = random.randint(0, 1)
             if r == 0:
                 hijo1 += a
+                hijo2 += b
             else:
                 hijo1 += b
-            s = random.randint(0, 1)
+                hijo2 += a
+            """s = random.randint(0, 1)
             if s == 0:
                 hijo2 += a
             else:
-                hijo2 += b
+                hijo2 += b"""
         poblacion.append(hijo1)
         poblacion.append(hijo2)
     return poblacion
@@ -88,7 +90,7 @@ k = 0
 factor = 2
 torneo = 8
 
-while cont == 0 and k < 150:
+while cont == 0 and k < 100:
     if k > 50:
         factor = 1
     mejores = seleccionar(resultados, m, poblacion, torneo)
