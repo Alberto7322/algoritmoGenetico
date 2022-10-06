@@ -2,7 +2,7 @@ import random
 import requests
 import time
 
-m = 200
+m = 100
 n = 80
 
 
@@ -115,5 +115,5 @@ while cont == 0 and k < 100:
 
    # print("El mejor resultado es:", mejor, "del cromosoma", poblacion[pos], "en la iteracion", k)
 fin = time.time()
-print("El mejor resultado es:", mejor_absoluto, "del cromosoma", cromosoma_absolto, "en la iteracion", iteracion)
+print("El mejor resultado es:", mejor_absoluto, "del cromosoma", cromosoma_absolto, "en la iteracion", iteracion, "con numero de evuluacion", iteracion*m)
 print("Tiempo ejecucion:", (fin - inicio))
