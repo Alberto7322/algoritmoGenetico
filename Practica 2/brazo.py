@@ -35,11 +35,16 @@ def evaluar(padre):
     r = requests.get(web)
     return r.text
 
-def seleccion(ev_padre, ev_hijo):
+def seleccion(ev_padre, ev_hijo, list_ev):
+    if ev_padre < ev_hijo:
+        list_ev.append(0)
+    else:
+        list_ev.append(1)
+    return list_ev
 
 
+def modi_varianzas():
     pass
-print(evaluar([0,0,0,0]))
 
 
 
