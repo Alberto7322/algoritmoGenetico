@@ -2,7 +2,7 @@ import random
 import requests
 import time
 
-m = 100
+m = 500
 n = 80
 
 
@@ -49,15 +49,15 @@ def cruce(mejores):
             r = random.randint(0, 1)
             if r == 0:
                 hijo1 += a
-                hijo2 += b
+
             else:
                 hijo1 += b
-                hijo2 += a
-            """s = random.randint(0, 1)
+
+            s = random.randint(0, 1)
             if s == 0:
                 hijo2 += a
             else:
-                hijo2 += b"""
+                hijo2 += b
         poblacion.append(hijo1)
         poblacion.append(hijo2)
     return poblacion
@@ -88,11 +88,12 @@ resultados = evaluar(poblacion)
 cont = 0
 k = 0
 factor = 2
-torneo = 8
+torneo = 20
 
 while cont == 0 and k < 100:
-    if k > 50:
+    if k > 10:
         factor = 1
+        torneo = 10
     mejores = seleccionar(resultados, m, poblacion, torneo)
     cruzados = cruce(mejores)
     poblacion = mutacion(cruzados, factor)
@@ -113,12 +114,12 @@ while cont == 0 and k < 100:
     else:
         no_mej += 1
 
-    if no_mej == 50:
+    if no_mej == 20:
         cont = 500
     print(k, no_mej)
     k += 1
 
    # print("El mejor resultado es:", mejor, "del cromosoma", poblacion[pos], "en la iteracion", k)
 fin = time.time()
-print("El mejor resultado es:", mejor_absoluto, "del cromosoma", cromosoma_absolto, "en la iteracion", iteracion, "con numero de evuluacion", iteracion*m)
+print("El mejor resultado es:", mejor_absoluto, "del cromosoma", cromosoma_absolto, "en la iteracion", iteracion, "con numero de evuluacion", iteracion*(m+1))
 print("Tiempo ejecucion:", (fin - inicio))
