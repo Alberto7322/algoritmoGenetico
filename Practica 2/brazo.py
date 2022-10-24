@@ -6,13 +6,15 @@ print(random.randrange(0,1,1))
 
 
 extension = 4
+c = 0.82
+s = 10
 
-def incializar():
+def inicializar():
     padre = []
     varianzas = []
     for _ in range(extension):
         padre.append(random.uniform(-180, 180))
-        varianzas.append(random.uniform(100, 300))
+        varianzas.append(random.uniform(0, 1000))
     return padre, varianzas
 
 def mutar(padre, varianzas):
@@ -35,16 +37,42 @@ def evaluar(padre):
     r = requests.get(web)
     return r.text
 
-def seleccion(ev_padre, ev_hijo, list_ev):
+def seleccion(ev_padre, ev_hijo, list_ev, padre, hijo):
     if ev_padre < ev_hijo:
         list_ev.append(0)
     else:
         list_ev.append(1)
-    return list_ev
+    if list_ev[-1] == 1:
+        return list_ev, hijo, ev_hijo
+    else:
+        return list_ev, padre, ev_padre
 
 
-def modi_varianzas():
-    pass
+def modi_varianzas(lis_ev, c, varianzas, s):
+    if len(lis_ev) >= 10:
+        v = lis_ev[-s:].count(1)/s
+        if v > 1/5:
+            for i in range(len(varianzas)):
+                varianzas[i] = varianzas[i] / c
+        elif v < 1/5:
+            for i in range(len(varianzas)):
+                varianzas[i] = varianzas[i] * c
+        else:
+            pass
+    return varianzas
 
+list_ev = []
+
+padre, varianzas = inicializar()
+
+for _ in range(300):
+    hijo = mutar(padre, varianzas)
+    ev_padre = evaluar(padre)
+    ev_hijo = evaluar(hijo)
+    list_ev, padre , ev= seleccion(ev_padre, ev_hijo, list_ev, padre, hijo)
+    varianzas = modi_varianzas(list_ev, c, varianzas, s)
+    print(ev)
+
+print(varianzas,"\n", padre, "\n", ev)
 
 
