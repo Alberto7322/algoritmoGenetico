@@ -3,11 +3,10 @@ import random
 from random import uniform, gauss
 import time
 
-print(random.randrange(0, 1, 1))
 
 extension = 4
 c = 0.82
-s = 10
+s = 50
 b = 1
 
 def inicializar():
@@ -30,9 +29,14 @@ def mutar(padre, varianzas):
 def sobrecruzamiento(individuos, varianzas):
     cruzado = individuos[0]
     varianza_cruzada = varianzas[0]
-    for i in range(len(individuos)):  # modificar para ser generico
-        cruzado[i] = (individuos[0][i] + individuos[1][i]) / 2
-        varianza_cruzada[i] = (varianzas[0][i] + varianzas[1][i]) / 2
+    funcion_ind=0
+    funcion_var=0
+    for i in range(len(individuos)):
+        for j in range(len(individuos)):
+            funcion_ind += individuos[j][i]
+            funcion_var += varianzas[j][i]
+        cruzado[i]= funcion_ind / poblacion
+        varianza_cruzada[i] = funcion_var/ poblacion
     return cruzado, varianza_cruzada
 
 
@@ -80,9 +84,14 @@ def seleccion_mult(individuo, hijo, varianzas, var_hijo):
             pos = i
     eval_hijo = float(evaluar(hijo))
     if peor > eval_hijo:
-        individuo[pos] = hijo
-        varianzas[pos] = var_hijo
-    return individuo
+        individuo.pop(pos)
+        individuo.append(hijo)
+        varianzas.pop(pos)
+        varianzas.append(var_hijo)
+        mejor = eval_hijo
+    else:
+        mejor = peor
+    return individuo, varianzas, mejor
 
 def modi_varianzas_mult(varianza, b, individuos):
     t = b/((2*(len(individuos)**0.5))**0.5)
@@ -101,28 +110,39 @@ if __name__ == '__main__':
     modo = "multiple"
 
     if modo == "1+1":
+        media_var = 1
         list_ev = []
         padre, varianzas = inicializar()
 
-        for _ in range(300):
+        while media_var > 0.00000000001:
             hijo = mutar(padre, varianzas)
             ev_padre = evaluar(padre)
             ev_hijo = evaluar(hijo)
             list_ev, padre, ev = seleccion_11(ev_padre, ev_hijo, list_ev, padre, hijo)
             varianzas = modi_varianzas_11(list_ev, c, varianzas, s)
+            aux = 0
+            for i in range(len(varianzas)):
+                aux += varianzas[i]
+            media_var = aux/4
             print(ev)
 
         print(varianzas, "\n", padre, "\n", ev)
     elif modo == "multiple":
-        poblacion = 2
+        poblacion = 3
         individuos = []
         varianzas = []
+        mejor_abs = 100000
         for i in range(poblacion):  # inciamos poblacion
             aux_ind, aux_var = inicializar()
             individuos.append(aux_ind)
             varianzas.append(aux_var)
-        for _ in range(100):
+        for _ in range(1000):
             cruzado, var_cruzada = sobrecruzamiento(individuos, varianzas)
             hijo = mutar(cruzado, var_cruzada)
             var_hijo = modi_varianzas_mult(var_cruzada, b, individuos)
-            individuos, varianzas = seleccion_mult(individuos, hijo, varianzas, var_hijo)
+            individuos, varianzas, mejor = seleccion_mult(individuos, hijo, varianzas, var_hijo)
+
+            if float(mejor) < float(mejor_abs):
+                mejor_abs = mejor
+            print(mejor)
+        print(mejor_abs)
