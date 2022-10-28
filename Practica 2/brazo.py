@@ -1,12 +1,13 @@
 import requests
 import random
+import math
 from random import uniform, gauss
 import time
 
 
 extension = 4
 c = 0.82
-s = 50
+s = 30
 b = 1
 
 def inicializar():
@@ -58,9 +59,9 @@ def seleccion_11(ev_padre, ev_hijo, list_ev, padre, hijo):
     else:
         list_ev.append(1)
     if list_ev[-1] == 1:
-        return list_ev, hijo, ev_hijo
+        return list_ev, hijo.copy(), ev_hijo
     else:
-        return list_ev, padre, ev_padre
+        return list_ev, padre.copy(), ev_padre
 
 
 def modi_varianzas_11(lis_ev, c, varianzas, s):
@@ -99,26 +100,27 @@ def modi_varianzas_mult(varianza, b, individuos):
     opcion = 1
     if opcion == 1:
         for i in range(len(varianza)):
-            varianza[i] = varianza[i] * random.gauss(0, t)
+            varianza[i] = varianza[i] * (math.e)**random.gauss(0, t)
     else:
         for i in range(len(varianza)):
-            varianza[i] = random.gauss(0, t0) * varianza[i] * random.gauss(0, t)
+            varianza[i] = (math.e)**random.gauss(0, t0) * varianza[i] * math.e(random.gauss(0, t))
     return varianza
 
 if __name__ == '__main__':
     modo = "1+1"  # 1+1 o multiple
-    modo = "multiple"
+    #modo = "multiple"
 
     if modo == "1+1":
         media_var = 1
         list_ev = []
         padre, varianzas = inicializar()
 
-        while media_var > 0.00000000001:
-            hijo = mutar(padre, varianzas)
-            ev_padre = evaluar(padre)
-            ev_hijo = evaluar(hijo)
-            list_ev, padre, ev = seleccion_11(ev_padre, ev_hijo, list_ev, padre, hijo)
+        while media_var > 1e-5:
+            for i in range(s):
+                hijo = mutar(padre, varianzas)
+                ev_padre = evaluar(padre)
+                ev_hijo = evaluar(hijo)
+                list_ev, padre, ev = seleccion_11(ev_padre, ev_hijo, list_ev, padre, hijo)
             varianzas = modi_varianzas_11(list_ev, c, varianzas, s)
             aux = 0
             for i in range(len(varianzas)):
