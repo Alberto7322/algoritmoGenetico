@@ -8,14 +8,14 @@ print(random.randrange(0, 1, 1))
 extension = 4
 c = 0.82
 s = 10
-b = 0.9
+b = 1
 
 def inicializar():
     padre = []
     varianzas = []
     for _ in range(extension):
         padre.append(random.uniform(-180, 180))
-        varianzas.append(random.uniform(0, 1000))
+        varianzas.append(random.uniform(300, 1000))
     return padre, varianzas
 
 
@@ -30,8 +30,8 @@ def mutar(padre, varianzas):
 def sobrecruzamiento(individuos, varianzas):
     cruzado = individuos[0]
     varianza_cruzada = varianzas[0]
-    for i in range(len(individuos)):
-        cruzado[i] = (individuos[0][i] + individuos[1][i])/2
+    for i in range(len(individuos)):  # modificar para ser generico
+        cruzado[i] = (individuos[0][i] + individuos[1][i]) / 2
         varianza_cruzada[i] = (varianzas[0][i] + varianzas[1][i]) / 2
     return cruzado, varianza_cruzada
 
@@ -49,7 +49,7 @@ def evaluar(padre):
 
 
 def seleccion_11(ev_padre, ev_hijo, list_ev, padre, hijo):
-    if ev_padre < ev_hijo:
+    if float(ev_padre) < float(ev_hijo):
         list_ev.append(0)
     else:
         list_ev.append(1)
@@ -68,17 +68,24 @@ def modi_varianzas_11(lis_ev, c, varianzas, s):
         elif v < 1 / 5:
             for i in range(len(varianzas)):
                 varianzas[i] = varianzas[i] * c
-        else:
-            pass
+
     return varianzas
 
-def seleccion_mult(individuo, hijo):
+def seleccion_mult(individuo, hijo, varianzas, var_hijo):
+    peor = 0
     for i in range(len(individuo)):
-        pass
-
+        evaluacion = float(evaluar(individuo[i]))
+        if evaluacion > peor:
+            peor = evaluacion
+            pos = i
+    eval_hijo = float(evaluar(hijo))
+    if peor > eval_hijo:
+        individuo[pos] = hijo
+        varianzas[pos] = var_hijo
+    return individuo
 
 def modi_varianzas_mult(varianza, b, individuos):
-    t = b/(2*(len(individuos)**0.5)**0.5)
+    t = b/((2*(len(individuos)**0.5))**0.5)
     t0 = b/((2*len(individuos))**0.5)
     opcion = 1
     if opcion == 1:
@@ -114,6 +121,8 @@ if __name__ == '__main__':
             aux_ind, aux_var = inicializar()
             individuos.append(aux_ind)
             varianzas.append(aux_var)
-        cruzado, var_cruzada = sobrecruzamiento(individuos, varianzas)
-        hijo = mutar(cruzado, var_cruzada)
-        var_hijo = modi_varianzas_mult(var_cruzada, b, individuos)
+        for _ in range(100):
+            cruzado, var_cruzada = sobrecruzamiento(individuos, varianzas)
+            hijo = mutar(cruzado, var_cruzada)
+            var_hijo = modi_varianzas_mult(var_cruzada, b, individuos)
+            individuos, varianzas = seleccion_mult(individuos, hijo, varianzas, var_hijo)
