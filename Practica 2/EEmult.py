@@ -53,7 +53,7 @@ def sobrecruzamiento(individuos, varianzas, evaluacion, hijos):
                 funcion_var = varianzas[var_padr][i]
             cruzado[i] = funcion_ind / len(individuos_elegidos)
             varianza_cruzada[i] = funcion_var / len(individuos_elegidos)
-        cruzados.append(cruzado)
+        cruzados.append(cruzado.copy())
         varianzas_cruzadas.append(varianza_cruzada)
     return cruzados, varianzas_cruzadas
 
