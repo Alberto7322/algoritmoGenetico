@@ -54,7 +54,7 @@ def sobrecruzamiento(individuos, varianzas, evaluacion, hijos):
             cruzado[i] = funcion_ind / len(individuos_elegidos)
             varianza_cruzada[i] = funcion_var / len(individuos_elegidos)
         cruzados.append(cruzado.copy())
-        varianzas_cruzadas.append(varianza_cruzada)
+        varianzas_cruzadas.append(varianza_cruzada.copy())
     return cruzados, varianzas_cruzadas
 
 
@@ -85,13 +85,13 @@ def mutar(padre, varianzas):
     return hijos
 
 def seleccion_mult(individuo, hijo, varianzas, var_hijo, num_hijos, eval_padre):
-   pos_mejor = 0
-   eval_hijos = evaluar(hijo)
-   eval_tot = eval_padre + eval_hijos
-   individuos = individuo + hijo
-   varianzas = varianzas + var_hijo
-   mejor = 10000000000000000
-   for j in range(num_hijos):
+    pos_mejor = 0
+    eval_hijos = evaluar(hijo)
+    eval_tot = eval_padre + eval_hijos
+    individuos = individuo + hijo
+    varianzas = varianzas + var_hijo
+    mejor = 10000000000000000
+    for j in range(num_hijos):
        peor = 0
        for i in range(len(individuos)):
            if float(eval_tot[i]) > peor:
@@ -101,15 +101,11 @@ def seleccion_mult(individuo, hijo, varianzas, var_hijo, num_hijos, eval_padre):
        varianzas.pop(peor_pos)
        eval_tot.pop(peor_pos)
 
-   for i in range(len(individuos)):
+    for i in range(len(individuos)):
        if float(eval_tot[i]) <= mejor:
         mejor = float(eval_tot[i])
         pos_mejor = i
-
-   eval_tot.sort()
-   print(eval_tot[:10])
-
-   return individuos, varianzas, mejor, pos_mejor
+    return individuos.copy(), varianzas.copy(), mejor, pos_mejor
 
 
 
@@ -131,7 +127,7 @@ def modi_varianzas_mult(varianza, b, individuos):
 
 if __name__ == '__main__':
     poblacion = 100
-    num_hijos = 50
+    num_hijos = 20
     individuos = []
     varianzas = []
     seleccionados = []
@@ -141,17 +137,18 @@ if __name__ == '__main__':
         individuos.append(aux_ind)
         varianzas.append(aux_var)
 
-    for k in range(1000):
+    for k in range(100):
         evaluacion = evaluar(individuos)
         cruzados, var_cruzadas = sobrecruzamiento(individuos, varianzas, evaluacion, num_hijos)
         hijos = mutar(cruzados, var_cruzadas)
         var_cruzadas = modi_varianzas_mult(var_cruzadas, b, individuos)
         individuos, varianzas, mejor, pos_mejor = seleccion_mult(individuos, hijos, varianzas, var_cruzadas, num_hijos, evaluacion)
+
         print(mejor)
         if float(mejor) < float(mejor_abs):
             mejor_abs = mejor
             mejor_ang = individuos[pos_mejor]
             print("Nuevo mejor", mejor, "angulos:", mejor_ang)
-        print(k)
+        print("Iteracion:", k)
 
     print(mejor_abs, "||", mejor_ang)
