@@ -72,7 +72,7 @@ def evaluar(poblacion):
 
         r = requests.get(web)
         evaluacion.append(float(r.text))
-    return evaluacion
+    return evaluacion.copy()
 
 def mutar(padre, varianzas):
     hijos = []
@@ -89,6 +89,7 @@ def seleccion_mult(individuo, hijo, varianzas, var_hijo, num_hijos, eval_padre):
     eval_hijos = evaluar(hijo)
     eval_tot = eval_padre + eval_hijos
     individuos = individuo + hijo
+    eval_tot2 = evaluar(individuos)
     varianzas = varianzas + var_hijo
     mejor = 10000000000000000
     for j in range(num_hijos):
