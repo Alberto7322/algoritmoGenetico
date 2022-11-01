@@ -12,8 +12,7 @@ def inicializar():
     for _ in range(extension):
         padre.append(random.uniform(-180, 180))
         varianzas.append(random.uniform(300, 1000))
-    return padre, varianzas
-
+    return padre.copy(), varianzas.copy()
 
 
 def selec_padres(individuos, evaluacion, varianzas):
@@ -36,6 +35,7 @@ def selec_padres(individuos, evaluacion, varianzas):
 
     return padres_elegidos, varianzas_padres
 
+
 def sobrecruzamiento(individuos, varianzas, evaluacion, hijos):
     cruzados = []
     varianzas_cruzadas = []
@@ -55,7 +55,7 @@ def sobrecruzamiento(individuos, varianzas, evaluacion, hijos):
             varianza_cruzada[i] = funcion_var / len(individuos_elegidos)
         cruzados.append(cruzado.copy())
         varianzas_cruzadas.append(varianza_cruzada.copy())
-    return cruzados, varianzas_cruzadas
+    return cruzados.copy(), varianzas_cruzadas
 
 
 def evaluar(poblacion):
@@ -74,6 +74,7 @@ def evaluar(poblacion):
         evaluacion.append(float(r.text))
     return evaluacion.copy()
 
+
 def mutar(padre, varianzas):
     hijos = []
     for i in range(len(padre)):
@@ -84,46 +85,45 @@ def mutar(padre, varianzas):
         hijos.append(hijo)
     return hijos
 
+
 def seleccion_mult(individuo, hijo, varianzas, var_hijo, num_hijos, eval_padre):
     pos_mejor = 0
     eval_hijos = evaluar(hijo)
     eval_tot = eval_padre + eval_hijos
     individuos = individuo + hijo
-    eval_tot2 = evaluar(individuos)
     varianzas = varianzas + var_hijo
     mejor = 10000000000000000
     for j in range(num_hijos):
-       peor = 0
-       for i in range(len(individuos)):
-           if float(eval_tot[i]) > peor:
-               peor = float(eval_tot[i])
-               peor_pos = i
-       individuos.pop(peor_pos)
-       varianzas.pop(peor_pos)
-       eval_tot.pop(peor_pos)
+        peor = 0
+        for i in range(len(individuos)):
+            if float(eval_tot[i]) > peor:
+                peor = float(eval_tot[i])
+                peor_pos = i
+        individuos.pop(peor_pos)
+        varianzas.pop(peor_pos)
+        eval_tot.pop(peor_pos)
 
     for i in range(len(individuos)):
-       if float(eval_tot[i]) <= mejor:
-        mejor = float(eval_tot[i])
-        pos_mejor = i
+        if float(eval_tot[i]) < mejor:
+            mejor = float(eval_tot[i])
+            pos_mejor = i
+    print(mejor)
     return individuos.copy(), varianzas.copy(), mejor, pos_mejor
 
 
-
 def modi_varianzas_mult(varianza, b, individuos):
-    t = b/((2*(len(individuos)**0.5))**0.5)
-    t0 = b/((2*len(individuos))**0.5)
+    t = b / ((2 * (len(individuos) ** 0.5)) ** 0.5)
+    t0 = b / ((2 * len(individuos)) ** 0.5)
     opcion = 1
     if opcion == 1:
         for i in range(len(varianza)):
             for j in range(len(varianza[i])):
-                varianza[i][j] = varianza[i][j] * (math.e)**random.gauss(0, t)
+                varianza[i][j] = varianza[i][j] * (math.e ** random.gauss(0, t))
     else:
         for i in range(len(varianza)):
             for j in range(len(varianza[i])):
-                varianza[i][j] =(math.e)**random.gauss(0, t0) * varianza[i][j] * (math.e)**random.gauss(0, t)
+                varianza[i][j] = (math.e ** random.gauss(0, t0)) * varianza[i][j] * (math.e ** random.gauss(0, t))
     return varianza
-
 
 
 if __name__ == '__main__':
@@ -143,9 +143,11 @@ if __name__ == '__main__':
         cruzados, var_cruzadas = sobrecruzamiento(individuos, varianzas, evaluacion, num_hijos)
         hijos = mutar(cruzados, var_cruzadas)
         var_cruzadas = modi_varianzas_mult(var_cruzadas, b, individuos)
-        individuos, varianzas, mejor, pos_mejor = seleccion_mult(individuos, hijos, varianzas, var_cruzadas, num_hijos, evaluacion)
-
+        prob_ind = individuos
+        individuos, varianzas, mejor, pos_mejor = seleccion_mult(individuos, hijos, varianzas, var_cruzadas, num_hijos,
+                                                                 evaluacion)
         print(mejor)
+        print(individuos[pos_mejor])
         if float(mejor) < float(mejor_abs):
             mejor_abs = mejor
             mejor_ang = individuos[pos_mejor]
