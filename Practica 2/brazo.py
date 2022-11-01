@@ -5,9 +5,9 @@ from random import uniform, gauss
 import time
 
 
-extension = 6
+extension = 10
 c = 0.82
-s = 100
+s = 50
 
 
 def inicializar():
