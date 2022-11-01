@@ -42,15 +42,17 @@ def sobrecruzamiento(individuos, varianzas):
 
 
 def evaluar(padre):
-    web = "http://memento.evannai.inf.uc3m.es/age/robot4?"
+    web = "http://163.117.164.219/age/robot"
+
     for i in range(len(padre)):
         if i != extension - 1:
             c = "c" + str(i + 1) + "=" + str(padre[i]) + "&"
         else:
             c = "c" + str(i + 1) + "=" + str(padre[i])
-        web = web + c
+        web = web + str(extension) + "?" + c
+
     r = requests.get(web)
-    return r.text
+    return r
 
 
 def seleccion_11(ev_padre, ev_hijo, list_ev, padre, hijo):
