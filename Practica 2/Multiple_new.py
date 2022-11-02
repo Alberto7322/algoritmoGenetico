@@ -1,7 +1,7 @@
 import random
 import requests
 import math
-
+import time
 
 class Multiple():
     def __init__(self, size_poblacion, tipo_poblacion, numero_articulaciones, size_torneo, numero_padres,
@@ -90,7 +90,7 @@ class Multiple():
                 elif self.numero_articulaciones == 10:
                     r = requests.get(self.web10 + url)
                     self.fitness.append(float(r.text))
-                print(i)
+
         if evaluacion != 1:
             return fitness_lista
         else:
@@ -199,16 +199,17 @@ class Multiple():
 
 if __name__ == '__main__':
     # Valores a modificar
-    size_poblacion = 100
+    size_poblacion = 500
     tipo_poblacion = 0
     numero_articulaciones = 4
-    tamanio_torneo = 10
-    numero_de_padres = 30
-    tipo_sobrecruzamiento = 1
+    tamanio_torneo = 40
+    numero_de_padres = 300
+    tipo_sobrecruzamiento = 0
     tipo_mutacion_varianza = 1
-    landa = 20
+    landa = 100
     # Fin
 
+    inicio = time.time()
     poblacion1 = Multiple(size_poblacion, tipo_poblacion, numero_articulaciones,
                           tamanio_torneo, numero_de_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa)
     # size_poblacion,tipo_poblacion,numero_articulaciones,size_torneo,numero_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa
@@ -217,13 +218,18 @@ if __name__ == '__main__':
     fitness = poblacion1.evaluar(poblacion1.poblacion, 1)
     print("\033[1m \033[96m El mejor individuo es {} \033[0m".format(min(poblacion1.fitness)))
     iteracion = 0
+    fin = time.time()
+    print("\033[1m \033[94mTiempo: {}".format(fin-inicio))
     while min(poblacion1.fitness) > 1e-2:
-        print("\033[1m \033[92m Iteracion:{}\033[0m\n".format(iteracion))
+        inicio = time.time()
         ganadores, varianzas = poblacion1.sobrecruzamiento()
         mutados, varianzas_mutados = poblacion1.mutar(ganadores, varianzas)
         poblacion1.seleccion_mult(mutados, varianzas_mutados)
+        fin = time.time()
+        print("\033[1m \033[92m Iteracion:{}\033[0m".format(iteracion))
         print("\033[1m \033[96m El mejor individuo es {} cuyos angulos son {} \033[0m".format(min(poblacion1.fitness),
                                                                                               poblacion1.poblacion[
                                                                                                   poblacion1.fitness.index(
                                                                                                       min(poblacion1.fitness))]))
+        print("\033[1m \033[94mTiempo: {}\n".format(fin - inicio))
         iteracion += 1
