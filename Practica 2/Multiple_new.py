@@ -90,7 +90,7 @@ class Multiple():
                 elif self.numero_articulaciones == 10:
                     r = requests.get(self.web10 + url)
                     self.fitness.append(float(r.text))
-
+                print(i)
         if evaluacion != 1:
             return fitness_lista
         else:
@@ -197,20 +197,33 @@ class Multiple():
 
         return self.poblacion, self.varianzas, self.fitness
 
+if __name__ == '__main__':
+    # Valores a modificar
+    size_poblacion = 100
+    tipo_poblacion = 0
+    numero_articulaciones = 4
+    tamanio_torneo = 10
+    numero_de_padres = 30
+    tipo_sobrecruzamiento = 1
+    tipo_mutacion_varianza = 1
+    landa = 20
+    # Fin
 
-poblacion1 = Multiple(100, 0, 4, 10, 30, 0, 1, 10)
-# size_poblacion,tipo_poblacion,numero_articulaciones,size_torneo,numero_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa
-poblacion1.inicializar()
-fitness = poblacion1.evaluar(poblacion1.poblacion, 1)
-print("\033[1m \033[96m El mejor individuo es {} \033[0m\n".format(min(poblacion1.fitness)))
-iteracion = 0
-while min(poblacion1.fitness) > 1e-2:
-    print("\033[1m \033[92m Iteracion:{}\033[0m".format(iteracion))
-    ganadores, varianzas = poblacion1.sobrecruzamiento()
-    mutados, varianzas_mutados = poblacion1.mutar(ganadores, varianzas)
-    poblacion1.seleccion_mult(mutados, varianzas_mutados)
-    print("\033[1m \033[96m El mejor individuo es {} cuyos angulos son {} \033[0m\n".format(min(poblacion1.fitness),
-                                                                                            poblacion1.poblacion[
-                                                                                                poblacion1.fitness.index(
-                                                                                                    min(poblacion1.fitness))]))
-    iteracion += 1
+    poblacion1 = Multiple(size_poblacion, tipo_poblacion, numero_articulaciones,
+                          tamanio_torneo, numero_de_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa)
+    # size_poblacion,tipo_poblacion,numero_articulaciones,size_torneo,numero_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa
+    poblacion1.inicializar()
+    print("evaluacion tocha")
+    fitness = poblacion1.evaluar(poblacion1.poblacion, 1)
+    print("\033[1m \033[96m El mejor individuo es {} \033[0m".format(min(poblacion1.fitness)))
+    iteracion = 0
+    while min(poblacion1.fitness) > 1e-2:
+        print("\033[1m \033[92m Iteracion:{}\033[0m\n".format(iteracion))
+        ganadores, varianzas = poblacion1.sobrecruzamiento()
+        mutados, varianzas_mutados = poblacion1.mutar(ganadores, varianzas)
+        poblacion1.seleccion_mult(mutados, varianzas_mutados)
+        print("\033[1m \033[96m El mejor individuo es {} cuyos angulos son {} \033[0m".format(min(poblacion1.fitness),
+                                                                                              poblacion1.poblacion[
+                                                                                                  poblacion1.fitness.index(
+                                                                                                      min(poblacion1.fitness))]))
+        iteracion += 1
