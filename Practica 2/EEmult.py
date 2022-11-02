@@ -74,14 +74,14 @@ def sobrecruzamiento(individuos, varianzas, evaluacion, landa):
 def evaluar(poblacion):
     evaluacion = []
     for j in range(len(poblacion)):
-        web = "http://163.117.164.219/age/robot"
+        web = "http://163.117.164.219/age/robot4?"
 
         for i in range(len(poblacion[j])):
             if i != extension - 1:
                 c = "c" + str(i + 1) + "=" + str(poblacion[j][i]) + "&"
             else:
                 c = "c" + str(i + 1) + "=" + str(poblacion[j][i])
-            web = web+ str(extension)+ "?" + c
+            web = web + c
 
         r = requests.get(web)
         evaluacion.append(float(r.text))

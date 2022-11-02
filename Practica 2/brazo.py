@@ -5,9 +5,9 @@ from random import uniform, gauss
 import time
 
 
-extension = 10
+extension = 6
 c = 0.82
-s = 50
+s = 10
 
 
 def inicializar():
@@ -43,19 +43,20 @@ def sobrecruzamiento(individuos, varianzas):
 
 def evaluar(padre):
     web = "http://163.117.164.219/age/robot"
+    web = "http://memento.evannai.inf.uc3m.es/age/robot6?"
 
     for i in range(len(padre)):
         if i != extension - 1:
             c = "c" + str(i + 1) + "=" + str(padre[i]) + "&"
         else:
             c = "c" + str(i + 1) + "=" + str(padre[i])
-        web = web + str(extension) + "?" + c
-
+        web = web + c
     r = requests.get(web)
-    return r
+    return r.text
 
 
 def seleccion_11(ev_padre, ev_hijo, list_ev, padre, hijo):
+    print(ev_padre)
     if float(ev_padre) < float(ev_hijo):
         list_ev.append(0)
     else:
