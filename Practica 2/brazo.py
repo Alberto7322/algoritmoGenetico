@@ -7,7 +7,7 @@ import time
 
 extension = 6
 c = 0.82
-s = 10
+s = 50
 
 
 def inicializar():

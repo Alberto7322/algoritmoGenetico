@@ -20,7 +20,7 @@ class Multiple():
         self.web4 = "http://163.117.164.219/age/robot4?"
         self.web6 = "http://163.117.164.219/age/robot6?"
         self.web10 = "http://163.117.164.219/age/robot10?"
-
+        self.size_progenitores = random.randint(2, 4)
     def __str__(self):
         return ("La poblacion es {}\n de tipo {}\n con las varianzas {}".format(self.poblacion, self.tipo_poblacion,
                                                                                 self.varianzas))
@@ -117,7 +117,7 @@ class Multiple():
 
         # Se realiza el cruzamiento
         # A la hora de realizar pruebas, cambiamos la declaración del número de padres a cruzar
-        self.size_progenitores = random.randint(2, 4)
+
         for _ in range(self.landa):
             padres_seleccionados = []
             varianzas_seleccionadas = []
@@ -203,10 +203,10 @@ if __name__ == '__main__':
     tipo_poblacion = 0
     numero_articulaciones = 4
     tamanio_torneo = 40
-    numero_de_padres = 300
-    tipo_sobrecruzamiento = 0
-    tipo_mutacion_varianza = 1
-    landa = 100
+    numero_de_padres = 10  # Num hijos
+    tipo_sobrecruzamiento = 0  # 0 o 1
+    tipo_mutacion_varianza = 0  # 0 o 1
+    landa = 1  # Num hijos
     # Fin
 
     inicio = time.time()
@@ -218,9 +218,12 @@ if __name__ == '__main__':
     fitness = poblacion1.evaluar(poblacion1.poblacion, 1)
     print("\033[1m \033[96m El mejor individuo es {} \033[0m".format(min(poblacion1.fitness)))
     iteracion = 0
+    count = 0
     fin = time.time()
     print("\033[1m \033[94mTiempo: {}".format(fin-inicio))
-    while min(poblacion1.fitness) > 1e-2:
+    min_prev = min(poblacion1.fitness)
+
+    while min(poblacion1.fitness) > 1e-2 and iteracion < 500 and count < 100:
         inicio = time.time()
         ganadores, varianzas = poblacion1.sobrecruzamiento()
         mutados, varianzas_mutados = poblacion1.mutar(ganadores, varianzas)
@@ -233,3 +236,9 @@ if __name__ == '__main__':
                                                                                                       min(poblacion1.fitness))]))
         print("\033[1m \033[94mTiempo: {}\n".format(fin - inicio))
         iteracion += 1
+        if min_prev == min(poblacion1.fitness):
+            count += 1
+        else:
+            count = 0
+        min_prev = min(poblacion1.fitness)
+
