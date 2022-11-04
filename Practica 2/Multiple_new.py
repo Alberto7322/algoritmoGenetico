@@ -19,8 +19,8 @@ class Multiple():
         self.landa = landa
         self.web4 = "http://163.117.164.219/age/robot4?"
         self.web6 = "http://163.117.164.219/age/robot6?"
-        self.web10 = "http://163.117.164.219/age/robot10b?"
-        self.size_progenitores = random.randint(2, 4)
+        self.web10 = "http://163.117.164.219/age/robot10?"
+        self.size_progenitores = 2
     def __str__(self):
         return ("La poblacion es {}\n de tipo {}\n con las varianzas {}".format(self.poblacion, self.tipo_poblacion,
                                                                                 self.varianzas))
@@ -199,13 +199,13 @@ class Multiple():
 
 if __name__ == '__main__':
     # Valores a modificar
-    size_poblacion = 300
+    size_poblacion = 200
     tipo_poblacion = 0
     numero_motores = 10
-    tamanio_torneo = 8
-    numero_de_padres = 50  # Num padres
+    tamanio_torneo = 2
+    numero_de_padres = 200  # Num padres
     tipo_mutacion_varianza = 0  # 0 o 1
-    landa = 50  # Num hijos
+    landa = 200  # Num hijos
     # Fin
 
     inicio = time.time()
@@ -222,7 +222,7 @@ if __name__ == '__main__':
     print("\033[1m \033[94mTiempo: {}".format(fin-inicio))
     min_prev = min(poblacion1.fitness)
 
-    while  iteracion < 5000 and count < 1500:
+    while iteracion < 5000:
         inicio = time.time()
         ganadores, varianzas = poblacion1.sobrecruzamiento()
         mutados, varianzas_mutados = poblacion1.mutar(ganadores, varianzas)
