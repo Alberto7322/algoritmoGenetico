@@ -148,9 +148,8 @@ class Multiple():
 
             elif self.tipo_sobrecruzamiento == 1:
                 for varianza in range(self.numero_articulaciones):
-                    varianza_hijo.append(0)
                     padre_indice = random.randint(0, longitud_seleccionados - 1)
-                    varianza_hijo[varianza] = varianzas_seleccionadas[padre_indice][varianza]
+                    varianza_hijo.append(varianzas_seleccionadas[padre_indice][varianza])
 
             ganadores.append(hijo.copy())
             varianzas_ganadores.append(varianza_hijo.copy())
@@ -199,19 +198,17 @@ class Multiple():
 
 if __name__ == '__main__':
     # Valores a modificar
-    size_poblacion = 500
-    tipo_poblacion = 0
-    numero_articulaciones = 4
-    tamanio_torneo = 40
-    numero_de_padres = 10  # Num hijos
-    tipo_sobrecruzamiento = 0  # 0 o 1
+    size_poblacion = 100
+    numero_articulaciones = 10
+    tamanio_torneo = 8
+    numero_de_padres = 75  # Num padres
     tipo_mutacion_varianza = 0  # 0 o 1
-    landa = 1  # Num hijos
-    # Fin
+    landa = 50  # Num hijos
+
 
     inicio = time.time()
-    poblacion1 = Multiple(size_poblacion, tipo_poblacion, numero_articulaciones,
-                          tamanio_torneo, numero_de_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa)
+    poblacion1 = Multiple(size_poblacion, 0, numero_articulaciones,
+                          tamanio_torneo, numero_de_padres, 0, tipo_mutacion_varianza, landa)
     # size_poblacion,tipo_poblacion,numero_articulaciones,size_torneo,numero_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa
     poblacion1.inicializar()
     print("evaluacion tocha")
@@ -223,7 +220,7 @@ if __name__ == '__main__':
     print("\033[1m \033[94mTiempo: {}".format(fin-inicio))
     min_prev = min(poblacion1.fitness)
 
-    while min(poblacion1.fitness) > 1e-2 and iteracion < 500 and count < 100:
+    while min(poblacion1.fitness) > 1e-2 and iteracion < 5000 and count < 700:
         inicio = time.time()
         ganadores, varianzas = poblacion1.sobrecruzamiento()
         mutados, varianzas_mutados = poblacion1.mutar(ganadores, varianzas)
