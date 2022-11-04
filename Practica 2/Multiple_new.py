@@ -19,7 +19,7 @@ class Multiple():
         self.landa = landa
         self.web4 = "http://163.117.164.219/age/robot4?"
         self.web6 = "http://163.117.164.219/age/robot6?"
-        self.web10 = "http://163.117.164.219/age/robot10?"
+        self.web10 = "http://163.117.164.219/age/robot10b?"
         self.size_progenitores = random.randint(2, 4)
     def __str__(self):
         return ("La poblacion es {}\n de tipo {}\n con las varianzas {}".format(self.poblacion, self.tipo_poblacion,
@@ -68,28 +68,28 @@ class Multiple():
             if evaluacion != 1:
                 if self.numero_articulaciones == 4:
                     r = requests.get(self.web4 + url)
-                    fitness_lista.append(float(r.text))
+                    fitness_lista.append(abs(float(r.text)))
 
                 elif self.numero_articulaciones == 6:
                     r = requests.get(self.web6 + url)
-                    fitness_lista.append(float(r.text))
+                    fitness_lista.append(abs(float(r.text)))
 
                 elif self.numero_articulaciones == 10:
                     r = requests.get(self.web10 + url)
-                    fitness_lista.append(float(r.text))
+                    fitness_lista.append(abs(float(r.text)))
 
             else:
                 if self.numero_articulaciones == 4:
                     r = requests.get(self.web4 + url)
-                    self.fitness.append(float(r.text))
+                    self.fitness.append(abs(float(r.text)))
 
                 elif self.numero_articulaciones == 6:
                     r = requests.get(self.web6 + url)
-                    self.fitness.append(float(r.text))
+                    self.fitness.append(abs(float(r.text)))
 
                 elif self.numero_articulaciones == 10:
                     r = requests.get(self.web10 + url)
-                    self.fitness.append(float(r.text))
+                    self.fitness.append(abs(float(r.text)))
 
         if evaluacion != 1:
             return fitness_lista
@@ -199,19 +199,18 @@ class Multiple():
 
 if __name__ == '__main__':
     # Valores a modificar
-    size_poblacion = 500
+    size_poblacion = 300
     tipo_poblacion = 0
-    numero_articulaciones = 4
-    tamanio_torneo = 40
-    numero_de_padres = 10  # Num hijos
-    tipo_sobrecruzamiento = 0  # 0 o 1
+    numero_motores = 10
+    tamanio_torneo = 8
+    numero_de_padres = 50  # Num padres
     tipo_mutacion_varianza = 0  # 0 o 1
-    landa = 1  # Num hijos
+    landa = 50  # Num hijos
     # Fin
 
     inicio = time.time()
-    poblacion1 = Multiple(size_poblacion, tipo_poblacion, numero_articulaciones,
-                          tamanio_torneo, numero_de_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa)
+    poblacion1 = Multiple(size_poblacion, tipo_poblacion, numero_motores,
+                          tamanio_torneo, numero_de_padres, 0, tipo_mutacion_varianza, landa)
     # size_poblacion,tipo_poblacion,numero_articulaciones,size_torneo,numero_padres, tipo_sobrecruzamiento, tipo_mutacion_varianza, landa
     poblacion1.inicializar()
     print("evaluacion tocha")
@@ -223,7 +222,7 @@ if __name__ == '__main__':
     print("\033[1m \033[94mTiempo: {}".format(fin-inicio))
     min_prev = min(poblacion1.fitness)
 
-    while min(poblacion1.fitness) > 1e-2 and iteracion < 500 and count < 100:
+    while  iteracion < 5000 and count < 1500:
         inicio = time.time()
         ganadores, varianzas = poblacion1.sobrecruzamiento()
         mutados, varianzas_mutados = poblacion1.mutar(ganadores, varianzas)

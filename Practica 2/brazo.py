@@ -5,7 +5,7 @@ from random import uniform, gauss
 import time
 
 
-extension = 6
+extension = 10
 c = 0.82
 s = 50
 
@@ -42,8 +42,8 @@ def sobrecruzamiento(individuos, varianzas):
 
 
 def evaluar(padre):
-    web = "http://163.117.164.219/age/robot"
-    web = "http://memento.evannai.inf.uc3m.es/age/robot6?"
+    web = "http://163.117.164.219/age/robot10?"
+    #web = "http://memento.evannai.inf.uc3m.es/age/robot10?"
 
     for i in range(len(padre)):
         if i != extension - 1:
